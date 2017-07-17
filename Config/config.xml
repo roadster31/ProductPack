@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<config xmlns="http://thelia.net/schema/dic/config"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://thelia.net/schema/dic/config http://thelia.net/schema/dic/config/thelia-1.0.xsd">
+
+    <forms>
+        <form name="productpack.itemform" class="ProductPack\Form\ProductPackItemForm" />
+    </forms>
+
+    <loops>
+        <loop name="productpack.items" class="ProductPack\Loop\ProductPackItem" />
+    </loops>
+
+    <hooks>
+        <hook id="productpack.product_tab" class="ProductPack\Hook\HookManager">
+            <tag name="hook.event_listener" event="product.tab" type="back" method="onProductTab" />
+            <tag name="hook.event_listener" event="product.edit-js" type="back" method="onProductEditJs" />
+        </hook>
+    </hooks>
+
+</config>

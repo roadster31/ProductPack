@@ -1,0 +1,7 @@
+{$category_id = $smarty.request.category_id|default:0}
+{$product_id = $smarty.request.product_id|default:$product_id}
+
+<option value="">Choisissez un produit</option>
+{loop type="product" name="p" backend_context=1 visible="*" category_default=$category_id return_url=false order="ref"}
+    <option value="{$ID}">{$REF} - {$TITLE}</option>
+{/loop}

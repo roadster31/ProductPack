@@ -1,0 +1,62 @@
+<script>
+$(function() {
+    $(document).on('click', '.btn-delete-pack-item', function(ev) {
+        if (! confirm("{intl l='Confirmez-vous la suppression de cet article du lot ?' js=1 d='productpack.bo.default'}")) {
+            ev.preventDefault();
+            ev.stopImmediatePropagation();
+        }
+    });
+
+    function ajaxSubmit($zis) {
+        var data, url;
+
+        if ($zis.attr('action')) {
+            data = $zis.serialize();
+            url = $zis.attr('action');
+        } else {
+            url = $zis.attr('href');
+        }
+
+        $.ajax({
+            url: url,
+            method: 'post',
+            data: data,
+            success: function(result) {
+                $($zis.data('ajax-target')).html(result);
+
+                $.notify({
+                    // options
+                    message: "{intl l='Le lot a bien été mis à jour.' js=1 d='productpack.bo.default'}"
+                },{
+                    // settings
+                    type: 'success',
+                    delay: 2500
+                });
+            },
+            error: function() {
+                alert("{intl l='Désolé, quelque chose s\'est mal passé. Merci de ré-essayer.' js=1 d='productpack.bo.default'}");
+            }
+        });
+    }
+
+    $(document).on('submit', 'form[data-ajax-target]', function(ev) {
+        ajaxSubmit($(this));
+        ev.preventDefault();
+    });
+
+    $(document).on('click', 'a[data-ajax-target]', function(ev) {
+        ajaxSubmit($(this));
+        ev.preventDefault();
+    });
+
+    $(document).on('change', '#category-selector', function(ev) {
+        $('#product-selector').load(
+            "{admin_viewurl view="product-pack/ajax/produits-par-rubrique"}",
+        {
+            category_id: $(this).val(),
+            product_id: {$product_id}
+        }
+        )
+    });
+});
+</script>

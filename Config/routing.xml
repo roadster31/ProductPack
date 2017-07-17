@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="productpack.show" path="/admin/module/productpack/show/{productId}">
+        <default key="_controller">ProductPack\Controller\ProductTabController::showItems</default>
+        <requirement key="productId">\d+</requirement>
+    </route>
+
+    <route id="productpack.create" path="/admin/module/productpack/addPackItem/{productId}">
+        <default key="_controller">ProductPack\Controller\ProductTabController::addPackItem</default>
+        <requirement key="productId">\d+</requirement>
+    </route>
+
+    <route id="productpack.update" path="/admin/module/productpack/updatePackItem/{productId}/{itemId}">
+        <default key="_controller">ProductPack\Controller\ProductTabController::updatePackItem</default>
+        <requirement key="productId">\d+</requirement>
+        <requirement key="itemId">\d+</requirement>
+    </route>
+
+    <route id="productpack.delete" path="/admin/module/productpack/deletePackItem/{productId}/{itemId}">
+        <default key="_controller">ProductPack\Controller\ProductTabController::deletePackItem</default>
+        <requirement key="productId">\d+</requirement>
+        <requirement key="itemId">\d+</requirement>
+    </route>
+</routes>

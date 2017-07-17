@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database defaultIdMethod="native" name="thelia"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="../../../core/vendor/propel/propel/resources/xsd/database.xsd" >
+
+    <table name="product_pack" namespace="ProductPack\Model">
+        <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
+        <column name="position" required="true" type="INTEGER" defaultValue="1"  />
+        <column name="host_product_id" required="true" type="INTEGER" />
+        <column name="product_id" required="true" type="INTEGER" />
+        <column name="quantity" required="true" type="INTEGER" defaultValue="1" />
+        <column name="price" required="true" scale="6" size="16" type="DECIMAL" defaultValue="0.000000" />
+
+        <foreign-key foreignTable="product" name="fk_product_pack_produit_host_product_id" onDelete="CASCADE" onUpdate="RESTRICT">
+            <reference foreign="id" local="host_product_id" />
+        </foreign-key>
+
+        <foreign-key foreignTable="product" name="fk_product_pack_produit_product_id" onDelete="CASCADE" onUpdate="RESTRICT">
+            <reference foreign="id" local="product_id" />
+        </foreign-key>
+
+        <behavior name="timestampable" />
+    </table>
+
+    <table name="product_pack_order" namespace="ProductPack\Model">
+        <column autoIncrement="true" name="id" primaryKey="true" required="true" type="INTEGER" />
+        <column name="order_product_id" required="true" type="INTEGER" />
+        <column name="description" type="CLOB" />
+
+        <index name="idx_product_pack_order_order_product_id">
+            <index-column name="order_product_id" />
+        </index>
+    </table>
+
+    <external-schema filename="local/config/schema.xml" referenceOnly="true" />
+</database>

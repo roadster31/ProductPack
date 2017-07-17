@@ -1,0 +1,145 @@
+<table class="table table-condensed table-bordered">
+    <thead>
+    <tr>
+        <th>
+            <div class="row">
+                <div class="col-md-6">{intl d='productpack.bo.default' l='Produit'}</div>
+                <div class="col-md-2">{intl d='productpack.bo.default' l='Quantité'}</div>
+                <div class="col-md-2">{intl d='productpack.bo.default' l='Prix'}</div>
+            </div>
+        </th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {loop type="productpack.items" name="product-pack-items" host_product_id=$product_id}
+        <tr>
+            <td>
+                {form name="productpack.itemform"}
+                    <form id="product_id_{$ID}" data-ajax-target="#product-pack-form" action="{url path="/admin/module/productpack/updatePackItem/$product_id/$ID"}#product-pack-forms" method="post">
+                        {form_hidden_fields}
+
+                        {form_field field="product_id"}
+                            <input type="hidden" name="{$name}" value="{$PRODUCT_ID}">
+                        {/form_field}
+                        {form_field field="position"}
+                            <input type="hidden" name="{$name}" value="{$POSITION}">
+                        {/form_field}
+
+                        {if $form_error}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="alert alert-danger">{$form_error_message}</div>
+                                </div>
+                            </div>
+                        {/if}
+
+                        <div class="row">
+                            {loop type="product" name="path" visible='*' backend_context=1 id=$PRODUCT_ID}
+                                <div class="col-sm-6">
+                                    <p class="form-control-static">
+                                        <a href="{url path="/admin/products/update" product_id=$ID}" target="_blank">{$REF}: {$TITLE}</a>
+                                    </p>
+                                </div>
+                            {/loop}
+
+                            <div class="col-sm-2">
+                                <input class="form-control" type="text" {form_field_attributes field='quantity' value=$QUANTITY}>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <div class="input-group">
+                                    <input class="form-control" type="text" {form_field_attributes field='price' value=$PRICE|round:'2'}>
+                                    <span class="input-group-addon">€</span>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <button class="btn btn-primary" type="submit" title="{intl d='productpack.bo.default' l='Valider les modifications'}">
+                                    <span class="glyphicon glyphicon-check"></span>
+                                </button>
+                                <a href="{url path="/admin/module/productpack/deletePackItem/$product_id/$ID"}" data-ajax-target="#product-pack-form" class="btn btn-danger btn-delete-pack-item" title="{intl d='productpack.bo.default' l='Supprimer ce produit du lot'}">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                {/form}
+            </td>
+        </tr>
+    {/loop}
+    {elseloop rel="product-pack-items"}
+        <tr>
+            <td>
+                <div class="alert alert-info">
+                    {intl l="Ce produit n'est pas un lot. Pour transformer ce produit en lot, ajoutez un produit ci-dessous." d='productpack.bo.default'}
+                </div>
+            </td>
+        </tr>
+    {/elseloop}
+
+    {* -- Add a new product to the pack ----------------------------------------------------------------------------- *}
+
+    <tr class="active">
+        <td>
+            {form name="productpack.itemform"}
+                <form data-ajax-target="#product-pack-form" action="{url path="/admin/module/productpack/addPackItem/$product_id"}#product-pack-forms" method="post">
+                    {form_hidden_fields}
+
+                    {* Not yet implemented *}
+                    {form_field field="position"}
+                        <input type="hidden" name="{$name}" value="1">
+                    {/form_field}
+
+                    {if $form_error}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="alert alert-danger">{$form_error_message}</div>
+                            </div>
+                        </div>
+                    {/if}
+
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <select id="category-selector" class="form-control" {form_field_attributes field='category_id'}>
+                                {form_field field='category_id'}
+                                {foreach $choices as $choice}
+                                    <option value="{$choice->value}" {if $choice->value == $value}selected="selected"{/if}>
+                                        {$choice->label nofilter}
+                                    </option>
+                                {/foreach}
+                                {/form_field}
+                            </select>
+                        </div>
+
+                        <div class="col-sm-3">
+                            {form_field field='product_id'}
+                                <select id="product-selector" required class="form-control" name="{$name}">
+                                    <option value="">Choisissez un produit</option>
+                                </select>
+                            {/form_field}
+                        </div>
+
+                        <div class="col-sm-2">
+                            <input class="form-control" type="text" {form_field_attributes field='quantity' value=$QUANTITY}>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="input-group">
+                                <input class="form-control" type="text" {form_field_attributes field='price' value=$PRICE}>
+                                <span class="input-group-addon">€</span>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <button class="btn btn-primary btn-remove" type="submit" title="{intl l="Ajouter ce produit au lot" d='productpack.bo.default'}">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            {/form}
+        </td>
+    </tr>
+    </tbody>
+</table>

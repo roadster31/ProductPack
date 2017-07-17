@@ -1,0 +1,15 @@
+<div class="row">
+    <div class="col-md-12 title title-without-tabs">
+        {intl d='productpack.bo.default' l="Produits composant le lot"}
+    </div>
+</div>
+
+<div class="form-container">
+    <div class="row">
+        <div class="col-md-12" id="product-pack-form">
+            <div class="form-container">
+                {include file="product-pack/ajax/product-pack-items.html" product_id=$product_id}
+            </div>
+        </div>
+    </div>
+</div>
